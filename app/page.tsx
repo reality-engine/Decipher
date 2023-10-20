@@ -25,23 +25,19 @@ const CohortInfo = ({
         <div className="space-y-32 lg:space-y-12">
           <RottenTomatoesPredictions
             currentData={currentData}
-            className="w-full h-auto"
           />
 
           <CustomerCohortEmotions
             currentTimePeriod={currentTimePeriod}
             currentData={currentData}
-            className="w-full h-auto"
           />
         </div>
         <div className="space-y-8 lg:space-y-12">
           <ProductInterest
             currentData={currentData}
-            className="w-full h-auto"
           />
           <CharacterInterests
             currentData={currentData}
-            className="w-full h-auto"
           />
         </div>
       </div>

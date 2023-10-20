@@ -1,105 +1,75 @@
-
 import React from "react";
 
+// Utility Function
+const mapToListItems = (data, defaultMessage) => {
+  if (data) {
+    return Object.entries(data).map(([key, value]) => (
+      <li key={key}>
+        {key}: {value}%
+      </li>
+    ));
+  }
+  return <li>{defaultMessage}</li>;
+};
 
+// Common UI Component
+const DataDisplay = ({ title, data, defaultMessage }) => (
+  <div className="bg-white dark:bg-black p-4 rounded shadow-md">
+    <h2>{title}</h2>
+    <ul>{mapToListItems(data, defaultMessage)}</ul>
+  </div>
+);
+
+// Individual Components
 export const CustomerCohortEmotions = ({ currentTimePeriod, currentData }) => {
-    return (
-      <div className="bg-white dark:bg-black p-12 rounded shadow-md">
-        <h2>Customer Cohort Emotions for {currentTimePeriod}</h2>
-        <ul>
-          {currentData && currentData.generalEmotions ? (
-            Object.entries(currentData.generalEmotions).map(
-              ([emotion, percentage]) => (
-                <li key={emotion}>
-                  {emotion}: {percentage}%
-                </li>
-              )
-            )
-          ) : (
-            <li>No general emotions data available</li>
-          )}
-        </ul>
-      </div>
-    );
-  };
-
-
+  return (
+    <DataDisplay
+      title={`Customer Cohort Emotions for ${currentTimePeriod}`}
+      data={currentData?.generalEmotions}
+      defaultMessage="No general emotions data available"
+    />
+  );
+};
 
 export const CharacterInterests = ({ currentData }) => {
-    return (
-      <div className=" bg-white dark:bg-black p-4 rounded shadow-md">
-        <h2>Character Interests</h2>
-        <ul>
-          {currentData && currentData.characterInterests ? (
-            Object.entries(currentData.characterInterests).map(
-              ([character, percentage]) => (
-                <li key={character}>
-                  {character}: {percentage}%
-                </li>
-              )
-            )
-          ) : (
-            <li>No character interests data available</li>
-          )}
-        </ul>
-      </div>
-    );
-  };
-  
-  export const ProductInterest = ({ currentData }) => {
-    return (
-      <div className=" bg-white dark:bg-black p-4 rounded shadow-md">
-        <h2>Product Interest</h2>
-        <ul>
-          {currentData && currentData.productInterest ? (
-            Object.entries(currentData.productInterest).map(
-              ([product, percentage]) => (
-                <li key={product}>
-                  {product}: {percentage}%
-                </li>
-              )
-            )
-          ) : (
-            <li>No product interest data available</li>
-          )}
-        </ul>
-      </div>
-    );
-  };
-  
-  export const RottenTomatoesPredictions = ({ currentData }) => {
-    return (
-      <div className=" bg-white dark:bg-black p-4 rounded shadow-md">
-        <h2>Rotten Tomatoes Predictions</h2>
-        {currentData && currentData.rottenTomatoesPredictions ? (
-          <div>
-            <h3>Critic Review</h3>
-            <p>
-              Percentage:{" "}
-              {currentData.rottenTomatoesPredictions.criticReview.percentage}%
-            </p>
-            <p>
-              Confidence Score:{" "}
-              {currentData.rottenTomatoesPredictions.criticReview.confidenceScore}
-            </p>
-  
-            <h3>Audience Review</h3>
-            <p>
-              Percentage:{" "}
-              {currentData.rottenTomatoesPredictions.audienceReview.percentage}%
-            </p>
-            <p>
-              Confidence Score:{" "}
-              {
-                currentData.rottenTomatoesPredictions.audienceReview
-                  .confidenceScore
-              }
-            </p>
-          </div>
-        ) : (
-          <p>No rotten tomatoes predictions data available</p>
-        )}
-      </div>
-    );
-  };
+  return (
+    <DataDisplay
+      title="Character Interests"
+      data={currentData?.characterInterests}
+      defaultMessage="No character interests data available"
+    />
+  );
+};
 
+export const ProductInterest = ({ currentData }) => {
+  return (
+    <DataDisplay
+      title="Product Interest"
+      data={currentData?.productInterest}
+      defaultMessage="No product interest data available"
+    />
+  );
+};
+
+export const RottenTomatoesPredictions = ({ currentData }) => {
+  const predictions = currentData?.rottenTomatoesPredictions;
+
+  return (
+    <div className="bg-white dark:bg-black p-4 rounded shadow-md">
+      <h2>Rotten Tomatoes Predictions</h2>
+      {predictions ? (
+        <div>
+          <h3>Critic Review</h3>
+          <p>Percentage: {predictions.criticReview.percentage}%</p>
+          <p>Confidence Score: {predictions.criticReview.confidenceScore}</p>
+
+          <h3>Audience Review</h3>
+          <p>Percentage: {predictions.audienceReview.percentage}%</p>
+          <p>Confidence Score: {predictions.audienceReview.confidenceScore}</p>
+        </div>
+      ) : (
+        <p>No rotten tomatoes predictions data available</p>
+      )}
+    </div>
+  );
+};
