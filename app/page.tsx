@@ -1,8 +1,6 @@
 "use client";
 
-import Image from "next/image";
 import React, { useState, FC } from "react";
-// import cohorts from '../components/mock_data.tsx';
 
 import Footer from "../components/footer";
 import cohorts from "@/components/mock_data";
@@ -10,7 +8,12 @@ import moviesData from "@/components/mock_movies";
 import MovieDisplay from "@/components/movie/movieDisplay";
 import CohortSelector from "@/components/audience/cohortSelector";
 
-import { ProductInterest,RottenTomatoesPredictions,CustomerCohortEmotions,CharacterInterests } from "@/components/audience/CohortEmotions";
+import {
+  ProductInterest,
+  RottenTomatoesPredictions,
+  CustomerCohortEmotions,
+  CharacterInterests,
+} from "@/components/audience/CohortEmotions";
 
 const CohortInfo = ({
   selectedCohort,
@@ -23,9 +26,7 @@ const CohortInfo = ({
       <CohortSelector value={selectedCohort} onChange={onChange} />
       <div className="grid grid-cols-2 gap-8 lg:gap-12 w-full">
         <div className="space-y-32 lg:space-y-12">
-          <RottenTomatoesPredictions
-            currentData={currentData}
-          />
+          <RottenTomatoesPredictions currentData={currentData} />
 
           <CustomerCohortEmotions
             currentTimePeriod={currentTimePeriod}
@@ -33,18 +34,13 @@ const CohortInfo = ({
           />
         </div>
         <div className="space-y-8 lg:space-y-12">
-          <ProductInterest
-            currentData={currentData}
-          />
-          <CharacterInterests
-            currentData={currentData}
-          />
+          <ProductInterest currentData={currentData} />
+          <CharacterInterests currentData={currentData} />
         </div>
       </div>
     </div>
   );
 };
-
 
 function MovieComponent() {
   const [sliderValue, setSliderValue] = useState(50); // initialized state for the slider
@@ -109,9 +105,6 @@ function MovieComponent() {
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {/* <Header/> */}
-
-      {/* <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]"> */}
       <MovieComponent />
     </main>
   );

@@ -51,7 +51,7 @@ const MovieDisplay = ({
   
         <MovieSlider
           onChange={setSliderValue}
-          step={stepSize}
+          stepSize={stepSize}
           value={sliderValue}
         />
       </div>
