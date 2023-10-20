@@ -14,6 +14,7 @@ const MovieSlider: FC<{
         value={value}
         onChange={(e) => onChange(parseInt(e.target.value, 10))}
       />
+      <div>{value} minutes</div>
     </div>
   );
 

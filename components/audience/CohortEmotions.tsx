@@ -1,16 +1,16 @@
 import React from "react";
 
 // Utility Function
-const mapToListItems = (data, defaultMessage) => {
-  if (data) {
-    return Object.entries(data).map(([key, value]) => (
-      <li key={key}>
-        {key}: {value}%
-      </li>
-    ));
-  }
-  return <li>{defaultMessage}</li>;
-};
+const mapToListItems = (data: Record<string, any> | undefined, defaultMessage: string): ReactNode => {
+    if (data) {
+      return Object.entries(data).map(([key, value]) => (
+        <li key={key}>
+          {key}: {String(value)}%
+        </li>
+      ));
+    }
+    return <li>{defaultMessage}</li>;
+  };
 
 // Common UI Component
 const DataDisplay = ({ title, data, defaultMessage }) => (
