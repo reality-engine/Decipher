@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 // Utility Function
 const mapToListItems = (data: Record<string, any> | undefined, defaultMessage: string): ReactNode => {
