@@ -6,240 +6,49 @@ import React, { useState, FC } from "react";
 
 import Footer from "../components/footer";
 import cohorts from "@/components/mock_data";
+import moviesData from "@/components/mock_movies";
+import MovieDisplay from "@/components/movie/movieDisplay";
+import CohortSelector from "@/components/audience/cohortSelector";
 
-const MovieDisplay = ({
-  movies,
-  onChangeMovie,
-  setSliderValue,
-  stepSize,
-  sliderValue,
+import { ProductInterest,RottenTomatoesPredictions,CustomerCohortEmotions,CharacterInterests } from "@/components/audience/CohortEmotions";
+
+const CohortInfo = ({
+  selectedCohort,
+  onChange,
+  currentTimePeriod,
+  currentData,
 }) => {
-  const [selectedMovie, setSelectedMovie] = useState("star-wars");
-
-  const handleMovieChange = (event) => {
-    setSelectedMovie(event.target.value);
-    onChangeMovie(event.target.value);
-  };
-
-  const movieDetails = movies[selectedMovie];
-
-  return (
-    <div className="flex flex-col items-center col-span-2 lg:col-span-1">
-      {/* Dropdown for movie selection */}
-
-      <p className="mb-4 lg:mb-8 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-        Get started by moving the slider for&nbsp;
-        <code className="font-mono font-bold">
-          <select
-            value={selectedMovie}
-            onChange={handleMovieChange}
-            className="mb-4"
-          >
-            {Object.keys(movies).map((movieKey) => (
-              <option value={movieKey} key={movieKey}>
-                {movies[movieKey].displayName}
-              </option>
-            ))}
-          </select>
-        </code>
-      </p>
-
-      <div className="mb-4 lg:mb-8 flex justify-center w-full">
-        <Image
-          src={movieDetails.imagePath}
-          alt={movieDetails.displayName}
-          width={360}
-          height={540}
-        />
-      </div>
-
-      <MovieSlider
-        onChange={setSliderValue}
-        step={stepSize}
-        value={sliderValue}
-      />
-    </div>
-  );
-};
-
-const MovieSlider: FC<{
-  value: number;
-  onChange: (value: number) => void;
-  stepSize: number;
-}> = ({ value, onChange, stepSize }) => (
-  <div className="mb-4 lg:mb-8">
-    <input
-      type="range"
-      min="0"
-      max="100"
-      step={stepSize}
-      value={value}
-      onChange={(e) => onChange(parseInt(e.target.value, 10))}
-    />
-  </div>
-);
-
-const CohortSelector: FC<{
-  value: string;
-  onChange: (cohort: string) => void;
-}> = ({ value, onChange }) => {
-  return (
-    <div className="mb-4 lg:mb-8">
-      <label
-        htmlFor="cohort"
-        className="block text-sm font-medium text-gray-700"
-      >
-        Select Customer Cohort
-      </label>
-      <select
-        id="cohort"
-        name="cohort"
-        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        {Object.keys(cohorts).map((cohortKey) => (
-          <option key={cohortKey} value={cohortKey}>
-            {cohorts[cohortKey].title}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-};
-
-const CustomerCohortEmotions = ({ currentTimePeriod, currentData }) => {
-  return (
-    <div className="bg-white dark:bg-black p-12 rounded shadow-md">
-      <h2>Customer Cohort Emotions for {currentTimePeriod}</h2>
-      <ul>
-        {currentData && currentData.generalEmotions ? (
-          Object.entries(currentData.generalEmotions).map(
-            ([emotion, percentage]) => (
-              <li key={emotion}>
-                {emotion}: {percentage}%
-              </li>
-            )
-          )
-        ) : (
-          <li>No general emotions data available</li>
-        )}
-      </ul>
-    </div>
-  );
-};
-
-
-const CharacterInterests = ({ currentData }) => {
-  return (
-    <div className=" bg-white dark:bg-black p-4 rounded shadow-md">
-      <h2>Character Interests</h2>
-      <ul>
-        {currentData && currentData.characterInterests ? (
-          Object.entries(currentData.characterInterests).map(
-            ([character, percentage]) => (
-              <li key={character}>
-                {character}: {percentage}%
-              </li>
-            )
-          )
-        ) : (
-          <li>No character interests data available</li>
-        )}
-      </ul>
-    </div>
-  );
-};
-
-const ProductInterest = ({ currentData }) => {
-  return (
-    <div className=" bg-white dark:bg-black p-4 rounded shadow-md">
-      <h2>Product Interest</h2>
-      <ul>
-        {currentData && currentData.productInterest ? (
-          Object.entries(currentData.productInterest).map(
-            ([product, percentage]) => (
-              <li key={product}>
-                {product}: {percentage}%
-              </li>
-            )
-          )
-        ) : (
-          <li>No product interest data available</li>
-        )}
-      </ul>
-    </div>
-  );
-};
-
-const RottenTomatoesPredictions = ({ currentData }) => {
-  return (
-    <div className=" bg-white dark:bg-black p-4 rounded shadow-md">
-      <h2>Rotten Tomatoes Predictions</h2>
-      {currentData && currentData.rottenTomatoesPredictions ? (
-        <div>
-          <h3>Critic Review</h3>
-          <p>
-            Percentage:{" "}
-            {currentData.rottenTomatoesPredictions.criticReview.percentage}%
-          </p>
-          <p>
-            Confidence Score:{" "}
-            {currentData.rottenTomatoesPredictions.criticReview.confidenceScore}
-          </p>
-
-          <h3>Audience Review</h3>
-          <p>
-            Percentage:{" "}
-            {currentData.rottenTomatoesPredictions.audienceReview.percentage}%
-          </p>
-          <p>
-            Confidence Score:{" "}
-            {
-              currentData.rottenTomatoesPredictions.audienceReview
-                .confidenceScore
-            }
-          </p>
-        </div>
-      ) : (
-        <p>No rotten tomatoes predictions data available</p>
-      )}
-    </div>
-  );
-};
-
-const CohortInfo = ({ selectedCohort, onChange, currentTimePeriod, currentData }) => {
   return (
     <div className="flex flex-col space-y-8 lg:space-y-4 w-full">
       <CohortSelector value={selectedCohort} onChange={onChange} />
       <div className="grid grid-cols-2 gap-8 lg:gap-12 w-full">
         <div className="space-y-32 lg:space-y-12">
-        <RottenTomatoesPredictions currentData={currentData} className="w-full h-auto"/>
+          <RottenTomatoesPredictions
+            currentData={currentData}
+            className="w-full h-auto"
+          />
 
           <CustomerCohortEmotions
             currentTimePeriod={currentTimePeriod}
             currentData={currentData}
             className="w-full h-auto"
           />
-         
         </div>
         <div className="space-y-8 lg:space-y-12">
-          <ProductInterest currentData={currentData} className="w-full h-auto"/>
-          <CharacterInterests currentData={currentData} className="w-full h-auto"/>
+          <ProductInterest
+            currentData={currentData}
+            className="w-full h-auto"
+          />
+          <CharacterInterests
+            currentData={currentData}
+            className="w-full h-auto"
+          />
         </div>
       </div>
     </div>
   );
-}
-
-
-
-const moviesData = {
-  "star-wars": {
-    displayName: "Star Wars",
-    imagePath: "/star-wars.jpeg",
-  },
 };
+
 
 function MovieComponent() {
   const [sliderValue, setSliderValue] = useState(50); // initialized state for the slider
@@ -248,12 +57,7 @@ function MovieComponent() {
   );
   const [selectedMovie, setSelectedMovie] = useState("star-wars");
 
-  const movies = {
-    "star-wars": {
-      displayName: "Star Wars",
-      imagePath: "/star-wars.jpeg",
-    },
-  };
+  const movies = moviesData;
 
   const handleMovieChange = (e) => {
     setSelectedMovie(e.target.value);
@@ -281,28 +85,24 @@ function MovieComponent() {
       <div className="grid grid-cols-2 gap-x-4 lg:mb-8">
         {/* Main content grid */}
         <div>
-        <MovieDisplay
-          movies={movies}
-          onChangeMovie={handleMovieChange}
-          setSliderValue={setSliderValue}
-          stepSize={stepSize}
-          sliderValue={sliderValue}
-        />
+          <MovieDisplay
+            movies={movies}
+            onChangeMovie={handleMovieChange}
+            setSliderValue={setSliderValue}
+            stepSize={stepSize}
+            sliderValue={sliderValue}
+          />
         </div>
 
         {/* Right Column: Cohort Information - Increased spacing */}
         <div className="flex flex-col space-y-8 lg:space-y-4">
-        <CohortInfo 
-    selectedCohort={selectedCohort} 
-    onChange={setSelectedCohort} 
-    currentTimePeriod={currentTimePeriod} 
-    currentData={currentData}
-/>
-
-          
+          <CohortInfo
+            selectedCohort={selectedCohort}
+            onChange={setSelectedCohort}
+            currentTimePeriod={currentTimePeriod}
+            currentData={currentData}
+          />
         </div>
-
-
       </div>
 
       <Footer />
