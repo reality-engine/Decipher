@@ -4,52 +4,94 @@ import * as d3 from 'd3';
 const HeatMapD3 = ({ data = {} }) => {
     const ref = useRef(null);
 
-  useEffect(() => {
-    drawHeatMap();
-  }, [data]);
+    const createMockData = () => {
+        // Define mock time and cohort values
+        const mockTimes = Array.from({length: 10}, (_, i) => i);
+        const mockCohorts = Array.from({length: 10}, (_, i) => `Cohort ${i}`);
 
-  const drawHeatMap = () => {
-    const svg = d3.select(ref.current);
-    svg.selectAll('*').remove(); // clear previous render
+        // Return mock data
+        return mockTimes.reduce((acc, time) => {
+            acc[time] = mockCohorts.reduce((innerAcc, cohort) => {
+                innerAcc[cohort] = {
+                    excitement: Math.random(),
+                    interest: Math.random(),
+                    boredom: Math.random(),
+                    fatigue: Math.random()
+                };
+                return innerAcc;
+            }, {});
+            return acc;
+        }, {});
+    };
 
-    const times = Object.keys(data);
-    const cohorts = Object.keys(data[times[0]]);
-    const excitementValues = times.flatMap(time => cohorts.map(cohort => data[time][cohort].excitement + data[time][cohort].interest - data[time][cohort].boredom - data[time][cohort].fatigue));
+    const drawHeatMap = (inputData) => {
+        const svg = d3.select(ref.current);
+        svg.selectAll('*').remove();
 
-    const colorScale = d3.scaleSequential(d3.interpolateBlues)
-                         .domain([d3.min(excitementValues), d3.max(excitementValues)]);
+        const times = Object.keys(inputData).map(key => +key);
+        if (times.length === 0) return;
 
-    const xScale = d3.scaleLinear().domain([d3.min(times), d3.max(times)]).range([0, 480]);
-    const yScale = d3.scaleBand().domain(cohorts).range([0, 480]).padding(0.05);
+        const cohorts = Object.keys(inputData[times[0]]);
+        if (cohorts.length === 0) return;
 
-    times.forEach(time => {
-      cohorts.forEach(cohort => {
-        const excitementValue = data[time][cohort].excitement + data[time][cohort].interest - data[time][cohort].boredom - data[time][cohort].fatigue;
-        svg.append('rect')
-           .attr('x', xScale(time))
-           .attr('y', yScale(cohort))
-           .attr('width', xScale.bandwidth ? xScale.bandwidth() : (480 / times.length))
-           .attr('height', yScale.bandwidth())
-           .attr('fill', colorScale(excitementValue))
-           .attr('stroke', 'white');
-      });
-    });
+        const excitementValues = times.flatMap(time => 
+            cohorts.map(cohort => 
+                inputData[time][cohort].excitement + 
+                inputData[time][cohort].interest - 
+                inputData[time][cohort].boredom - 
+                inputData[time][cohort].fatigue
+            )
+        );
 
-    // Axes
-    const xAxis = d3.axisBottom(xScale);
-    const yAxis = d3.axisLeft(yScale);
+        const colorScale = d3.scaleSequential(d3.interpolateBlues)
+                             .domain([d3.min(excitementValues), d3.max(excitementValues)]);
 
-    svg.append("g")
-       .attr("class", "x-axis")
-       .attr("transform", "translate(0," + 480 + ")")
-       .call(xAxis);
+        const xScale = d3.scaleLinear()
+                        .domain([Math.min(...times), Math.max(...times)])
+                        .range([0, 480]);
 
-    svg.append("g")
-       .attr("class", "y-axis")
-       .call(yAxis);
-  };
+        const yScale = d3.scaleBand()
+                        .domain(cohorts)
+                        .range([0, 480])
+                        .padding(0.05);
 
-  return <svg ref={ref} width="500" height="500"></svg>;
+        times.forEach(time => {
+            cohorts.forEach(cohort => {
+                const excitementValue = inputData[time][cohort].excitement + 
+                                        inputData[time][cohort].interest - 
+                                        inputData[time][cohort].boredom - 
+                                        inputData[time][cohort].fatigue;
+
+                svg.append('rect')
+                   .attr('x', xScale(time))
+                   .attr('y', yScale(cohort))
+                   .attr('width', xScale.bandwidth ? xScale.bandwidth() : (480 / times.length))
+                   .attr('height', yScale.bandwidth())
+                   .attr('fill', colorScale(excitementValue))
+                   .attr('stroke', 'white');
+            });
+        });
+
+        // Axes
+        svg.append("g")
+           .attr("class", "x-axis")
+           .attr("transform", "translate(0," + 480 + ")")
+           .call(d3.axisBottom(xScale));
+
+        svg.append("g")
+           .attr("class", "y-axis")
+           .call(d3.axisLeft(yScale));
+    };
+
+    useEffect(() => {
+        if (Object.keys(data).length === 0) {
+            drawHeatMap(createMockData());
+        } else {
+            drawHeatMap(data);
+        }
+    }, [data]);
+
+    return <svg ref={ref} width="500" height="500"></svg>;
 };
 
 export default HeatMapD3;
