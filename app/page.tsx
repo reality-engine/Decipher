@@ -39,8 +39,15 @@ export default function Home() {
     setIsModalOpen(true);
   };
 
+  const [darkMode, setDarkMode] = useState(false); // New state for dark mode
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-24">
+      
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm flex flex-col">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 lg:mb-8">
           <div>
@@ -63,8 +70,10 @@ export default function Home() {
             />
           </div>
         </div>
+        
         <button
-          className={`fixed bottom-4 right-4 p-10 text-lg rounded-full bg-red-400 transition-transform transform hover:scale-105 hover:bg-green-600`}
+        // shadow-md fixed right-15 bottom-15 z-10 transition duration-500 ease-in-out hover:bg-red-500 transform hover:-translate-y-1 hover:scale-110 ... focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 rounded-full px-5 text-white py-5 bg-blue-500
+          className={`fixed shadow-md  z-10 bottom-4  right-4 p-10 text-lg duration-500 ease-in-out  transition-transform transform hover:scale-105  hover:bg-green-500 transform hover:-translate-y-1 hover:scale-110 ... focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50  rounded-full px-5 text-white py-5 bg-blue-500`}
           onClick={handleModalOpen}
         >
           Want More?
