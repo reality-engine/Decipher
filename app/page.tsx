@@ -1,62 +1,26 @@
 "use client";
 
-import React, { useState, FC } from "react";
+import React, { useState } from "react";
 
 import Footer from "../components/footer";
 import cohorts from "@/components/mock_data";
 import moviesData from "@/components/mock_movies";
 import MovieDisplay from "@/components/movie/movieDisplay";
-import CohortSelector from "@/components/audience/cohortSelector";
+import CohortInfo from "@/components/audience/CohortInfo";
+import HeatMapD3 from "@/components/movie/heatmap";
+import generateHeatmapData from "@/components/helper_mock";
 
-import {
-  ProductInterest,
-  RottenTomatoesPredictions,
-  CustomerCohortEmotions,
-  CharacterInterests,
-} from "@/components/audience/CohortEmotions";
-
-const CohortInfo = ({
-  selectedCohort,
-  onChange,
-  currentTimePeriod,
-  currentData,
-}) => {
-  return (
-    <div className="flex flex-col space-y-8 lg:space-y-4 w-full">
-      <CohortSelector value={selectedCohort} onChange={onChange} />
-      <div className="grid grid-cols-2 gap-8 lg:gap-12 w-full">
-        <div className="space-y-32 lg:space-y-12">
-          <RottenTomatoesPredictions currentData={currentData} />
-
-          <CustomerCohortEmotions
-            currentTimePeriod={currentTimePeriod}
-            currentData={currentData}
-          />
-        </div>
-        <div className="space-y-8 lg:space-y-12">
-          <ProductInterest currentData={currentData} />
-          <CharacterInterests currentData={currentData} />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-function MovieComponent() {
-  const [sliderValue, setSliderValue] = useState(50); // initialized state for the slider
+export default function Home() {
+  const [sliderValue, setSliderValue] = useState(50);
   const [selectedCohort, setSelectedCohort] = useState(
     "26-35-males-entertainment"
   );
   const [selectedMovie, setSelectedMovie] = useState("star-wars");
 
-  const movies = moviesData;
-
   const handleMovieChange = (e) => {
     setSelectedMovie(e.target.value);
-    // onChangeMovie(e.target.value);
   };
 
-  // Helper function to calculate the current time period based on the slider value
   const getCurrentTimePeriod = () => {
     const timeSegments = Object.keys(cohorts[selectedCohort].timePeriods);
     const segmentLength = 100 / timeSegments.length;
@@ -69,43 +33,52 @@ function MovieComponent() {
 
   const timeSegments = Object.keys(cohorts[selectedCohort].timePeriods);
   const stepSize = 100 / timeSegments.length; // Calculate the step size
+  const movies = moviesData;
 
-  return (
-    <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex flex-col">
-      {/* Slider instruction */}
-
-      <div className="grid grid-cols-2 gap-x-4 lg:mb-8">
-        {/* Main content grid */}
-        <div>
-          <MovieDisplay
-            movies={movies}
-            onChangeMovie={handleMovieChange}
-            setSliderValue={setSliderValue}
-            stepSize={stepSize}
-            sliderValue={sliderValue}
-          />
-        </div>
-
-        {/* Right Column: Cohort Information - Increased spacing */}
-        <div className="flex flex-col space-y-8 lg:space-y-4">
-          <CohortInfo
-            selectedCohort={selectedCohort}
-            onChange={setSelectedCohort}
-            currentTimePeriod={currentTimePeriod}
-            currentData={currentData}
-          />
-        </div>
-      </div>
-
-      <Footer />
-    </div>
+  const maleEntertainmentHeatmap = generateHeatmapData(
+    cohorts["26-35-males-entertainment"].timePeriods
   );
-}
 
-export default function Home() {
+  const moviesHeat = {
+    ...moviesData,
+    "star-wars": {
+      ...moviesData["star-wars"],
+      heatmapData: maleEntertainmentHeatmap, // Use maleEntertainmentHeatmap as a sample for now
+    },
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <MovieComponent />
+    <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-24">
+      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm flex flex-col">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 lg:mb-8">
+          <div>
+            <MovieDisplay
+              movies={movies}
+              onChangeMovie={handleMovieChange}
+              setSliderValue={setSliderValue}
+              sliderValue={sliderValue}
+              stepSize={stepSize}
+              selectedMovie={selectedMovie} // Pass this prop
+            />
+            <div className="mt-8">
+              {movies[selectedMovie]?.heatmapData && (
+                <HeatMapD3 data={movies[selectedMovie].heatmapData} />
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col space-y-8">
+            <CohortInfo
+              selectedCohort={selectedCohort}
+              onChange={setSelectedCohort}
+              currentTimePeriod={currentTimePeriod}
+              currentData={currentData}
+            />
+          </div>
+        </div>
+        <button>Download Insights</button>
+        <Footer />
+      </div>
     </main>
   );
 }

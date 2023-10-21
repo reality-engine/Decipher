@@ -49,9 +49,12 @@ const maleEntertainment2635 = {
           C3P0: 15,
         },
         productInterest: {
-          Lightsabers: 35,
-          StormTroopers: 25,
-          // ... add more entities here
+          Lightsabers: 30,
+          StormTroopers: 20,
+          "Galactic Helmets": 25,  // Added
+          "Jedi Robes": 35,        // Added
+          "Spaceship Models": 15,  // Added
+          "Blaster Pistols": 18    // Added
         },
         rottenTomatoesPredictions: {
           criticReview: {
@@ -79,10 +82,13 @@ const maleEntertainment2635 = {
           "Obi Wan Kenobi": 21,
           C3P0: 14,
         },
-        productInterest: {
-          Lightsabers: 28,
-          StormTroopers: 22,
-          "Galactic Ships": 30,
+         productInterest: {
+          Lightsabers: 35,
+          StormTroopers: 25,
+          "Galactic Helmets": 28,  // Added
+          "Jedi Robes": 32,        // Added
+          "Spaceship Models": 16,  // Added
+          "Blaster Pistols": 20    // Added
         },
         rottenTomatoesPredictions: {
           criticReview: {
