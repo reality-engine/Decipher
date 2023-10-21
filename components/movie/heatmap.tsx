@@ -91,7 +91,7 @@ const HeatMapD3 = ({ data = {} }) => {
         }
     }, [data]);
 
-    return <svg ref={ref} width="500" height="500"></svg>;
+    return <svg ref={ref} width="500" height="500" style={{ border: '1px solid black' }}></svg>;
 };
 
 export default HeatMapD3;
