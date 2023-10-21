@@ -8,12 +8,10 @@ const CohortSelector: FC<{
   }> = ({ value, onChange }) => {
     return (
       <div className="mb-4 lg:mb-8">
-        <label
-          htmlFor="cohort"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Select Customer Cohort
-        </label>
+
+<p className=" w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+        Choose your Audience! started by moving the slider for&nbsp;
+        <code className="font-mono font-bold">
         <select
           id="cohort"
           name="cohort"
@@ -27,6 +25,10 @@ const CohortSelector: FC<{
             </option>
           ))}
         </select>
+        </code>
+      </p>
+       
+       
       </div>
     );
   };

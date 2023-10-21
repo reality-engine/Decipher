@@ -25,7 +25,7 @@ const ToggleCohort = ({ categories, onCategoryChange }) => {
   };
 
   return (
-    <div className="flex space-x-4">
+    <div className="flex space-x-4 mx-4">
       {categories.map((category) => (
         <button
           key={category}

@@ -7,14 +7,14 @@ import cohorts from "@/components/mock_data";
 import moviesData from "@/components/mock_movies";
 import MovieDisplay from "@/components/movie/movieDisplay";
 import CohortInfo from "@/components/audience/CohortInfo";
-import HeatMapD3 from "@/components/movie/heatmap";
-import generateHeatmapData from "@/components/helper_mock";
 
 export default function Home() {
   const [sliderValue, setSliderValue] = useState(50);
   const [selectedCohort, setSelectedCohort] = useState(
     "26-35-males-entertainment"
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [selectedMovie, setSelectedMovie] = useState("star-wars");
 
   const handleMovieChange = (e) => {
@@ -35,16 +35,8 @@ export default function Home() {
   const stepSize = 100 / timeSegments.length; // Calculate the step size
   const movies = moviesData;
 
-  const maleEntertainmentHeatmap = generateHeatmapData(
-    cohorts["26-35-males-entertainment"].timePeriods
-  );
-
-  const moviesHeat = {
-    ...moviesData,
-    "star-wars": {
-      ...moviesData["star-wars"],
-      heatmapData: maleEntertainmentHeatmap, // Use maleEntertainmentHeatmap as a sample for now
-    },
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
   };
 
   return (
@@ -60,11 +52,6 @@ export default function Home() {
               stepSize={stepSize}
               selectedMovie={selectedMovie} // Pass this prop
             />
-            <div className="mt-8">
-              {movies[selectedMovie]?.heatmapData && (
-                <HeatMapD3 data={movies[selectedMovie].heatmapData} />
-              )}
-            </div>
           </div>
 
           <div className="flex flex-col space-y-8">
@@ -76,9 +63,47 @@ export default function Home() {
             />
           </div>
         </div>
-        <button>Download Insights</button>
-        <Footer />
+        <button
+          className={`fixed bottom-4 right-4 p-10 text-lg rounded-full bg-red-400 transition-transform transform hover:scale-105 hover:bg-green-600`}
+          onClick={handleModalOpen}
+        >
+          Want More?
+        </button>
+
+        {isModalOpen && (
+          <div
+            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+            onClick={() => setIsModalOpen(false)} // Close modal when clicking outside
+          >
+            <div
+              className="bg-white p-8 rounded-lg shadow-xl w-1/2"
+              onClick={(e) => e.stopPropagation()} // Prevents modal from closing when the modal content itself is clicked
+            >
+              <h2 className="text-2xl font-bold mb-6">Options</h2>
+              <div className="grid gap-4">
+                <button className="bg-gray-200 p-2 rounded hover:bg-gray-300">
+                  Download Data as CSV
+                </button>
+                <button className="bg-gray-200 p-2 rounded hover:bg-gray-300">
+                  Access API Documentation
+                </button>
+                <button className="bg-gray-200 p-2 rounded hover:bg-gray-300">
+                  Contact DreamTeam
+                </button>
+              </div>
+              <button
+                className="mt-4 block w-full text-center bg-red-500 text-white p-2 rounded hover:bg-red-600"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+
       </div>
+      <Footer />
+
     </main>
   );
 }

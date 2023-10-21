@@ -20,7 +20,6 @@ const Footer: FC = () => (
           priority
         />
       </a>
-      <>DreamMachine</>
     </div>
   );
 
