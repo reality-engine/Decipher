@@ -54,7 +54,7 @@ export const ProductInterest = ({ currentData }) => {
   );
 };
 
-export const RottenTomatoesPredictions = ({ currentData }) => {
+export const RottenTomatoesPredictions = ({ currentData,selectedCategory }) => {
   const predictions = currentData?.rottenTomatoesPredictions;
 
 

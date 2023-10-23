@@ -1,22 +1,33 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Providers } from '@/app/providers'
+import { Layout } from '@/components/Layout'
+
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
-
-export const metadata: Metadata = {
-  title: 'DreamMachine',
-  description: 'DreamDeciphering - Understand your content!',
+export const metadata = {
+  title: {
+    template: '%s - DreamMachine',
+    default:
+      'DreamMachine - Coming Soon',
+  },
+  description:
+    'Coming Soon',
+  alternates: {
+    types: {
+      'application/rss+xml': `${process.env.NEXT_PUBLIC_SITE_URL}/feed.xml`,
+    },
+  },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+      <body className="flex h-full bg-zinc-50 dark:bg-black">
+        <Providers>
+          <div className="flex w-full">
+            <Layout>{children}</Layout>
+          </div>
+        </Providers>
+      </body>
     </html>
   )
 }
