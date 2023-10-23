@@ -20,6 +20,10 @@ const maleEntertainment2635 = {
         productInterest: {
           Lightsabers: 30,
           StormTroopers: 20,
+          "Galactic Helmets": 12,  // Added
+          "Jedi Robes": 75,        // Added
+          "Spaceship Models": 24,  // Added
+          "Blaster Pistols": 11    // Added
           // ... add more entities here
         },
         rottenTomatoesPredictions: {
