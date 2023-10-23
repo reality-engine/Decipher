@@ -25,15 +25,15 @@ const ToggleCohort = ({ categories, onCategoryChange }) => {
   };
 
   return (
-    <div className="flex space-x-4 mx-4">
+    <div className=" flex   mx-4">
       {categories.map((category) => (
         <button
           key={category}
           onClick={() => handleClick(category)}
           className={
             category === selectedCategory
-              ? "bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded"
-              : "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+              ? "bg-green-700 hover:bg-green-800 text-white text-sm mb-2 py-2 px-2 rounded"
+              : "bg-blue-500 hover:bg-blue-600 text-white text-sm mb-2 py-2 px-2 rounded"
           }
         >
           {category}
@@ -42,12 +42,11 @@ const ToggleCohort = ({ categories, onCategoryChange }) => {
     </div>
   );
 };
-
 const RadarVisualization = ({ currentData }) => {
-  const [selectedCategory, setSelectedCategory] = useState("Intent and Engagement");
+  const [selectedCategory, setSelectedCategory] = useState("Intent & Engagement");
 
   const categoryDataMap = {
-    "Intent and Engagement": currentData?.generalEmotions,
+    "Intent & Engagement": currentData?.generalEmotions,
     "Product Interest": currentData?.productInterest,
     "Character Interests": currentData?.characterInterests,
   };
@@ -55,10 +54,10 @@ const RadarVisualization = ({ currentData }) => {
   const radarData = transformDataForRadar(categoryDataMap[selectedCategory]);
 
   return (
-    <div>
+    <div className="flex flex-col w-full">
       <ToggleCohort
         categories={[
-          "Intent and Engagement",
+          "Intent & Engagement",
           "Product Interest",
           "Character Interests",
         ]}
@@ -68,5 +67,6 @@ const RadarVisualization = ({ currentData }) => {
     </div>
   );
 };
+
 
 export default RadarVisualization;

@@ -57,48 +57,65 @@ export const ProductInterest = ({ currentData }) => {
 export const RottenTomatoesPredictions = ({ currentData }) => {
   const predictions = currentData?.rottenTomatoesPredictions;
 
-  return (
-    <div className="bg-white  p-8 rounded shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Review Predictions</h2>
-      {predictions ? (
-        <div>
-          <div className="mb-12 mr-4">
-            <h3 className="text-lg font-medium mb-2">Critic Review</h3>
-            <Image src={"fresh.svg"} alt="Tomatoes" width={30} height={30} />
-            <div className="flex items-center">
-              <span className="text-3xl font-bold text-red-500">
-                {predictions.criticReview.percentage}%
-              </span>
-              <span className="ml-4 mr-4 mt-2 mb-2 text-gray-600">
-                TOMATOMETER
-              </span>
-            </div>
-            <p className="text-gray-500">
-              {(predictions.criticReview.confidenceScore * 100).toFixed(1)}%
-              confidence
-            </p>
-          </div>
 
-          <div>
-            <h3 className="text-lg font-medium mb-2">Audience Review</h3>
-            <Image
-              src={"freshAudience.svg"}
-              alt="Tomatoes"
-              width={30}
-              height={30}
-            />
-            <div className="flex items-center">
-              <span className="text-3xl font-bold text-green-500">
-                {predictions.audienceReview.percentage}%
-              </span>
-              <span className="ml-4 text-gray-600">AUDIENCE SCORE</span>
+  return (
+    <div className="flow-root bg-white p-8 rounded shadow-md">
+      <h2 className="text-xl font-semibold mb-4">Review Predictions</h2>
+
+      {predictions ? (
+        <ul role="list" className="-mb-8">
+          {/* Critic Review */}
+          <li>
+            <div className="relative pb-8">
+              <div className="relative flex space-x-3">
+                
+                <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                  <div>
+                    <h3 className="text-lg font-medium mb-2">Critic Review</h3>
+                    <Image src={"fresh.svg"} alt="Tomatoes" width={30} height={30} />
+                    <div className="flex items-center">
+                      <span className="text-3xl font-bold text-red-500">
+                        {predictions.criticReview.percentage}%
+                      </span>
+                      <span className="ml-4 mr-4 mt-2 mb-2 text-gray-600">
+                        TOMATOMETER
+                      </span>
+                    </div>
+                    <p className="text-gray-500">
+                      {(predictions.criticReview.confidenceScore * 100).toFixed(1)}%
+                      confidence
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <p className="text-gray-500">
-              {(predictions.audienceReview.confidenceScore * 100).toFixed(1)}%
-              confidence
-            </p>
-          </div>
-        </div>
+          </li>
+
+          {/* Audience Review */}
+          <li>
+            <div className="relative pb-8">
+              <div className="relative flex space-x-3">
+                
+                <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                  <div>
+                    <h3 className="text-lg font-medium mb-2">Audience Review</h3>
+                    <Image src={"freshAudience.svg"} alt="Tomatoes" width={30} height={30} />
+                    <div className="flex items-center">
+                      <span className="text-3xl font-bold text-green-500">
+                        {predictions.audienceReview.percentage}%
+                      </span>
+                      <span className="ml-4 text-gray-600">AUDIENCE SCORE</span>
+                    </div>
+                    <p className="text-gray-500">
+                      {(predictions.audienceReview.confidenceScore * 100).toFixed(1)}%
+                      confidence
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
       ) : (
         <p className="text-gray-500">
           No rotten tomatoes predictions data available
